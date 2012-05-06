@@ -1,0 +1,54 @@
+<!--
+
+ Copyright 2009 Creemama
+ 
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+ http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+
+-->
+<project name="crumbs" default="dist" basedir=".">
+	<property name="src" location="src/main/java" />
+	<property name="resources" location="src/main/resources" />
+	<property name="lib" location="lib" />
+	<property name="build" location="target/classes" />
+	<property name="dist" location="target" />
+
+	<target name="init">
+		<tstamp />
+		<mkdir dir="${build}" />
+	</target>
+
+	<target name="compile" depends="init" description="compile the source ">
+		<javac srcdir="${src}" destdir="${build}" />
+		<copy todir="${build}">
+			<fileset dir="${resources}" />
+		</copy>
+	</target>
+
+	<target name="dist" depends="compile" description="generate the distribution">
+		<mkdir dir="${dist}/lib" />
+		<jar jarfile="${dist}/lib/crumbs-${DSTAMP}.jar" basedir="${build}" />
+		<copy todir="${dist}/lib">
+			<fileset dir="${lib}" />
+		</copy>
+	</target>
+
+	<target name="src" depends="init" description="generate the distribution">
+		<mkdir dir="${dist}/lib" />
+		<jar jarfile="${dist}/lib/crumbs-src-${DSTAMP}.jar" basedir="${src}" includes="**/**.java" excludes="editor/**" />
+	</target>
+
+	<target name="clean" description="clean up">
+		<delete dir="${build}" />
+		<delete dir="${dist}" />
+	</target>
+</project>

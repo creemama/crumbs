@@ -22,19 +22,23 @@ import static java.lang.Integer.toHexString;
 import static java.lang.Integer.toOctalString;
 
 /**
+ * Abstract base class for those methods common to common to
+ * {@link RegExBuilder} and {@link CharClassBuilder}
+ * 
  * @author Chris Topher
  * @version 0.0, Sep 5, 2009
+ * @see CommonBuilder
  */
-public abstract class AbstractBuilder<T extends AbstractBuilder<T>> {
+abstract class BaseCommonBuilder<B extends CommonBuilder<B>> implements CommonBuilder<B> {
 
-	static final char[] charClassSpecialCharacters = //
+	private static final char[] charClassSpecialCharacters = //
 	new char[] { ']', '\\', '^', '-' };
 
-	private final StringBuilder builder_;
+	private final StringBuilder builder;
 
 	/**
-	 * Constructs a {@code CommonBuilderImpl} with the specified backing {@code
-	 * StringBuilder}.
+	 * Constructs a {@code CommonBuilderImpl} with the specified backing
+	 * {@code StringBuilder}.
 	 * <p>
 	 * {@code regEx} is assumed to be non-<tt>null</tt>.
 	 * </p>
@@ -42,8 +46,8 @@ public abstract class AbstractBuilder<T extends AbstractBuilder<T>> {
 	 * @param builder
 	 *            backing string buffer used to build the regular expression
 	 */
-	AbstractBuilder(StringBuilder builder) {
-		this.builder_ = builder;
+	protected BaseCommonBuilder() {
+		this.builder = new StringBuilder();
 	}
 
 	/**
@@ -54,7 +58,7 @@ public abstract class AbstractBuilder<T extends AbstractBuilder<T>> {
 	 * 
 	 * @return {@code this}
 	 */
-	protected abstract T thiz();
+	protected abstract B thiz();
 
 	/**
 	 * Appends {@code str} to the regular expression.
@@ -69,9 +73,13 @@ public abstract class AbstractBuilder<T extends AbstractBuilder<T>> {
 	 *            string to append to this regular expression
 	 * @return this {@code AbstractBuilder}
 	 */
-	protected final T t(String str) {
-		this.builder_.append(str);
+	protected final B t(String str) {
+		this.builder.append(str);
 		return thiz();
+	}
+
+	protected BaseCommonBuilder<B> u(String str) {
+		return (BaseCommonBuilder<B>) t(str);
 	}
 
 	/**
@@ -89,12 +97,16 @@ public abstract class AbstractBuilder<T extends AbstractBuilder<T>> {
 	 * @throws IllegalArgumentException
 	 *             if {@code obj} is {@code null}
 	 */
-	protected final T t(Object obj) {
+	protected final B t(Object obj) {
 		if (obj == null) {
-			throw illegalNullArg(Object.class, "obj"); //$NON-NLS-1$
+			throw illegalNullArg(Object.class, "obj");
 		}
-		this.builder_.append(obj.toString());
+		this.builder.append(obj.toString());
 		return thiz();
+	}
+
+	protected final BaseCommonBuilder<B> u(Object obj) {
+		return (BaseCommonBuilder<B>) t(obj);
 	}
 
 	/**
@@ -108,9 +120,13 @@ public abstract class AbstractBuilder<T extends AbstractBuilder<T>> {
 	 *            character to append to this regular expression
 	 * @return this {@code AbstractBuilder}
 	 */
-	protected final T t(char character) {
-		this.builder_.append(character);
+	protected final B t(char character) {
+		this.builder.append(character);
 		return thiz();
+	}
+
+	protected final BaseCommonBuilder<B> u(char character) {
+		return (BaseCommonBuilder<B>) t(character);
 	}
 
 	/**
@@ -124,90 +140,61 @@ public abstract class AbstractBuilder<T extends AbstractBuilder<T>> {
 	 *            integer to be append to this regular expression
 	 * @return this {@code AbstractBuilder}
 	 */
-	protected final T t(int integer) {
-		this.builder_.append(integer);
+	protected final B t(int integer) {
+		this.builder.append(integer);
 		return thiz();
+	}
+
+	protected final BaseCommonBuilder<B> u(int integer) {
+		return (BaseCommonBuilder<B>) t(integer);
 	}
 
 	@Override
 	public final String toString() {
-		return this.builder_.toString();
+		return this.builder.toString();
 	}
 
 	// ==========
 	// Characters
 	// ==========
 
-	/**
-	 * See {@link CommonBuilder#bell()}.
-	 * 
-	 * @return {@code this} AbstractBuilder
-	 */
-	public T bell() {
-		return t("\\a"); //$NON-NLS-1$
+	@Override
+	public B bell() {
+		return t("\\a");
 	}
 
-	/**
-	 * See {@link CommonBuilder#tab()}.
-	 * 
-	 * @return {@code this} AbstractBuilder
-	 */
-	public T tab() {
-		return t("\\t"); //$NON-NLS-1$
+	@Override
+	public B tab() {
+		return t("\\t");
 	}
 
-	/**
-	 * See {@link CommonBuilder#lineFeed()}.
-	 * 
-	 * @return {@code this} AbstractBuilder
-	 */
-	public T lineFeed() {
-		return t("\\n"); //$NON-NLS-1$
+	@Override
+	public B lineFeed() {
+		return t("\\n");
 	}
 
-	/**
-	 * See {@link CommonBuilder#verticalTab()}.
-	 * 
-	 * @return {@code this} AbstractBuilder
-	 */
-	public T verticalTab() {
-		return t("\\v"); //$NON-NLS-1$
+	@Override
+	public B verticalTab() {
+		return t("\\v");
 	}
 
-	/**
-	 * See {@link CommonBuilder#formFeed()}.
-	 * 
-	 * @return {@code this} AbstractBuilder
-	 */
-	public T formFeed() {
-		return t("\\f"); //$NON-NLS-1$
+	@Override
+	public B formFeed() {
+		return t("\\f");
 	}
 
-	/**
-	 * See {@link CommonBuilder#carriageReturn()}.
-	 * 
-	 * @return {@code this} AbstractBuilder
-	 */
-	public T carriageReturn() {
-		return t("\\r"); //$NON-NLS-1$
+	@Override
+	public B carriageReturn() {
+		return t("\\r");
 	}
 
-	/**
-	 * See {@link CommonBuilder#escape()}.
-	 * 
-	 * @return {@code this} AbstractBuilder
-	 */
-	public T escape() {
-		return t("\\e"); //$NON-NLS-1$
+	@Override
+	public B escape() {
+		return t("\\e");
 	}
 
-	/**
-	 * 
-	 * @param c
-	 * @return 
-	 */
-	public T control(char c) {
-
+	@Override
+	public B control(char c) {
 		// Implementation Note
 
 		// Character.isLetter is insufficient here.
@@ -217,129 +204,138 @@ public abstract class AbstractBuilder<T extends AbstractBuilder<T>> {
 		// System.out.println(Character.isLetter('\u00ED'));
 
 		if ('A' <= c && c <= 'Z') {
-			return t("\\c").t(c); //$NON-NLS-1$
+			return u("\\c").t(c);
 		} else if ('a' <= c && c <= 'z') {
-			return t("\\c").t(toUpperCase(c)); //$NON-NLS-1$
+			return u("\\c").t(toUpperCase(c));
 		}
 		// \u222A is the union symbol
 		throw illegalOutsideSetArg( //
-				char.class, "c", //$NON-NLS-1$
-				"'" + new Character(c) + "'", //$NON-NLS-1$//$NON-NLS-2$
-				"['A'-'Z']\u222A['a'-'z']"); //$NON-NLS-1$
+				char.class, "x", "'" + new Character(c) + "'", "['A'-'Z']\u222A['a'-'z']");
 	}
 
-
-	public T octal(int octal) {
+	@Override
+	public B octal(int octal) {
 		if (0 < octal || octal > 255) {
 			throw illegalOutsideSetArg( //
-					int.class, "octal", toOctalString(octal), //$NON-NLS-1$
-					"[0 base 8,377 base 8] = [0 base 10,255 base 10]"); //$NON-NLS-1$
+					int.class, "octal", toOctalString(octal), "[0 base 8,377 base 8] = [0 base 10,255 base 10]");
 		}
-		return t("\\0").t(toOctalString(octal)); //$NON-NLS-1$
+		return u("\\0").t(toOctalString(octal));
 	}
 
-
-	public T ascii(int hex) {
+	@Override
+	public B ascii(int hex) {
 		if (hex < 0x00 || hex > 0xFF) {
 			throw illegalOutsideSetArg( //
-					int.class, "hex", //$NON-NLS-1$
-					toHexString(hex).toUpperCase(), //
-					"[0x00,0xFF]=[0,255]"); //$NON-NLS-1$
+					int.class, "hex", toHexString(hex).toUpperCase(), //
+					"[0x00,0xFF]=[0,255]");
 		}
-		t("\\x"); //$NON-NLS-1$
+		t("\\x");
 		return pad(toHexString(hex).toUpperCase(), 2);
 	}
 
-	// ===============
-	// Unicode Support
-	// ===============
-
-
-	public T unicode(int hex) {
+	@Override
+	public B unicode(int hex) {
 		if (hex < 0x0000 || hex > 0xFFFF) {
 			throw illegalOutsideSetArg( //
-					int.class, "hex", //$NON-NLS-1$
-					toHexString(hex).toUpperCase(), //
-					"[0x0000,0xFFFF]=[0,65535]"); //$NON-NLS-1$
+					int.class, "hex", toHexString(hex).toUpperCase(), //
+					"[0x0000,0xFFFF]=[0,65535]");
 		}
-		t("\\u"); //$NON-NLS-1$
+		t("\\u");
 		return pad(toHexString(hex).toUpperCase(), 4);
 	}
 
-	private T pad(String hex, int length) {
+	private B pad(String hex, int length) {
 		int i = hex.length();
 		while (i < length) {
-			t("0"); //$NON-NLS-1$
+			t("0");
 			i++;
 		}
 		return t(hex);
 	}
 
-	public T unicode(UnicodeBlock block) {
+	@Override
+	public B unicode(UnicodeBlock block) {
 		return lowercaseP(block);
 	}
 
-	public T notUnicode(UnicodeBlock block) {
+	@Override
+	public B notUnicode(UnicodeBlock block) {
 		return uppercaseP(block);
 	}
 
-	public T unicode(UnicodeCharacterProperty category) {
+	@Override
+	public B unicode(UnicodeCharacterProperty category) {
 		return lowercaseP(category);
 	}
 
-	public T notUnicode(UnicodeCharacterProperty category) {
+	@Override
+	public B notUnicode(UnicodeCharacterProperty category) {
 		return uppercaseP(category);
 	}
 
-	private T lowercaseP(Object propertyBlockOrScript) {
-		return t("\\p{").t(propertyBlockOrScript).t("}"); //$NON-NLS-1$ //$NON-NLS-2$
+	@Override
+	public B unicode(UnicodeScript category) {
+		return lowercaseP(category);
 	}
 
-	private T uppercaseP(Object propertyBlockOrScript) {
-		return t("\\P{").t(propertyBlockOrScript).t("}"); //$NON-NLS-1$ //$NON-NLS-2$
+	@Override
+	public B notUnicode(UnicodeScript category) {
+		return uppercaseP(category);
 	}
 
-	public T posix(POSIXCharacterClass posixCharClass) {
+	private B lowercaseP(Object propertyBlockOrScript) {
+		return u("\\p{").u(propertyBlockOrScript).t("}");
+	}
+
+	private B uppercaseP(Object propertyBlockOrScript) {
+		return u("\\P{").u(propertyBlockOrScript).t("}");
+	}
+
+	@Override
+	public B posix(POSIXCharacterClass posixCharClass) {
 		return lowercaseP(posixCharClass);
 	}
 
-	// ===========================
-	// Shorthand Character Classes
-	// ===========================
-
-	public T notPOSIX(POSIXCharacterClass posixCharClass) {
+	@Override
+	public B notPOSIX(POSIXCharacterClass posixCharClass) {
 		return lowercaseP(posixCharClass);
 	}
 
-	public T digit() {
-		return t("\\d"); //$NON-NLS-1$
+	@Override
+	public B digit() {
+		return t("\\d");
 	}
 
-	public T notDigit() {
-		return t("\\D"); //$NON-NLS-1$
+	@Override
+	public B notDigit() {
+		return t("\\D");
 	}
 
-	public T whitespace() {
-		return t("\\s"); //$NON-NLS-1$
+	@Override
+	public B whitespace() {
+		return t("\\s");
 	}
 
-	public T notWhitespace() {
-		return t("\\S"); //$NON-NLS-1$
+	@Override
+	public B notWhitespace() {
+		return t("\\S");
 	}
 
-	public T wordCharacter() {
-		return t("\\w"); //$NON-NLS-1$
+	@Override
+	public B wordCharacter() {
+		return t("\\w");
 	}
 
-	public T notWordCharacter() {
-		return t("\\W"); //$NON-NLS-1$
+	@Override
+	public B notWordCharacter() {
+		return t("\\W");
 	}
 
 	// TODO when should a special character be escaped?
 	protected void charClass(char c) {
 		for (char d : charClassSpecialCharacters) {
 			if (c == d) {
-				t("\\").t(c); //$NON-NLS-1$
+				u("\\").t(c);
 				return;
 			}
 		}

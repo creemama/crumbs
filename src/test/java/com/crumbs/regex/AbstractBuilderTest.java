@@ -26,40 +26,39 @@ import org.junit.Test;
  */
 public class AbstractBuilderTest {
 
-	@SuppressWarnings("unchecked")
-	private AbstractBuilder<?> createAbstractBuilder() {
-		return new AbstractBuilder(new StringBuilder()) {
+	private static class TestBaseCommonBuilder extends BaseCommonBuilder<TestBaseCommonBuilder> {
+		public TestBaseCommonBuilder() {
+			super();
+		}
 
-			@Override
-			protected AbstractBuilder<?> thiz() {
-				return this;
-			}
-		};
+		@Override
+		protected TestBaseCommonBuilder thiz() {
+			return this;
+		}
 	}
 
+	static private TestBaseCommonBuilder createAbstractBuilder() {
+		return new TestBaseCommonBuilder();
+	}
 
 	/**
-	 * Tests {@link AbstractBuilder#t(String)}.
+	 * Tests {@link BaseCommonBuilder#t(String)}.
 	 */
 	@Test
-	public void testT()
-	{
-		AbstractBuilder<?> regEx = createAbstractBuilder();
+	public void testT() {
+		TestBaseCommonBuilder regEx = createAbstractBuilder();
 
 		regEx.t(null);
 		assertEquals("null", regEx.toString());
 
-		try
-		{
-			regEx.t((Object)null);
+		try {
+			regEx.t((Object) null);
 			assertEquals("null", regEx.toString());
 			fail();
-		}
-		catch (IllegalArgumentException e)
-		{
+		} catch (IllegalArgumentException e) {
 			// expected
 		}
-			
+
 		regEx.t("dog");
 		assertEquals("nulldog", regEx.toString());
 
@@ -72,43 +71,43 @@ public class AbstractBuilderTest {
 
 	@Test
 	public void characterTest() {
-		AbstractBuilder<?> regEx = createAbstractBuilder();
+		TestBaseCommonBuilder regEx = createAbstractBuilder();
 
 		regEx.lineFeed();
-		assertEquals("\\n", regEx.toString()); //$NON-NLS-1$
+		assertEquals("\\n", regEx.toString());
 
 		regEx.carriageReturn();
-		assertEquals("\\n\\r", regEx.toString()); //$NON-NLS-1$
+		assertEquals("\\n\\r", regEx.toString());
 
 		regEx.formFeed();
-		assertEquals("\\n\\r\\f", regEx.toString()); //$NON-NLS-1$
+		assertEquals("\\n\\r\\f", regEx.toString());
 
 		regEx.bell();
-		assertEquals("\\n\\r\\f\\a", regEx.toString()); //$NON-NLS-1$
+		assertEquals("\\n\\r\\f\\a", regEx.toString());
 
 		regEx.escape();
-		assertEquals("\\n\\r\\f\\a\\e", regEx.toString()); //$NON-NLS-1$
+		assertEquals("\\n\\r\\f\\a\\e", regEx.toString());
 
 		regEx.verticalTab();
-		assertEquals("\\n\\r\\f\\a\\e\\v", regEx.toString()); //$NON-NLS-1$
+		assertEquals("\\n\\r\\f\\a\\e\\v", regEx.toString());
 
 		regEx.tab();
-		assertEquals("\\n\\r\\f\\a\\e\\v\\t", regEx.toString()); //$NON-NLS-1$
+		assertEquals("\\n\\r\\f\\a\\e\\v\\t", regEx.toString());
 	}
 
 	@Test
 	public void controlCharTest() {
-		AbstractBuilder<?> regEx = createAbstractBuilder();
+		TestBaseCommonBuilder regEx = createAbstractBuilder();
 
 		regEx.control('A');
-		assertEquals("\\cA", regEx.toString()); //$NON-NLS-1$
+		assertEquals("\\cA", regEx.toString());
 
 		regEx.control('z');
-		assertEquals("\\cA\\cZ", regEx.toString()); //$NON-NLS-1$
+		assertEquals("\\cA\\cZ", regEx.toString());
 
 		// \u0065 is Unicode for lowercase e
 		regEx.control('\u0065');
-		assertEquals("\\cA\\cZ\\cE", regEx.toString()); //$NON-NLS-1$
+		assertEquals("\\cA\\cZ\\cE", regEx.toString());
 
 		try {
 			regEx.control('0');
@@ -127,7 +126,7 @@ public class AbstractBuilderTest {
 
 	@Test
 	public void asciiTest() {
-		AbstractBuilder<?> regEx = createAbstractBuilder();
+		TestBaseCommonBuilder regEx = createAbstractBuilder();
 
 		try {
 			regEx.ascii(-1);
@@ -144,15 +143,15 @@ public class AbstractBuilderTest {
 		}
 
 		regEx.ascii(0x01);
-		assertEquals("\\x01", regEx.toString()); //$NON-NLS-1$
+		assertEquals("\\x01", regEx.toString());
 
 		regEx.ascii(0x6A);
-		assertEquals("\\x01\\x6A", regEx.toString()); //$NON-NLS-1$
+		assertEquals("\\x01\\x6A", regEx.toString());
 	}
 
 	@Test
 	public void unicodeTest() {
-		AbstractBuilder<?> regEx = createAbstractBuilder();
+		TestBaseCommonBuilder regEx = createAbstractBuilder();
 
 		try {
 			regEx.unicode(-1);
@@ -169,29 +168,29 @@ public class AbstractBuilderTest {
 		}
 
 		regEx.unicode(0x0001);
-		assertEquals("\\u0001", regEx.toString()); //$NON-NLS-1$
+		assertEquals("\\u0001", regEx.toString());
 
 		regEx.unicode(0x00FA);
-		assertEquals("\\u0001\\u00FA", regEx.toString()); //$NON-NLS-1$
+		assertEquals("\\u0001\\u00FA", regEx.toString());
 
 		regEx.unicode(0x0ABC);
-		assertEquals("\\u0001\\u00FA\\u0ABC", regEx.toString()); //$NON-NLS-1$
+		assertEquals("\\u0001\\u00FA\\u0ABC", regEx.toString());
 
 		regEx.unicode(0x1234);
-		assertEquals("\\u0001\\u00FA\\u0ABC\\u1234", regEx.toString()); //$NON-NLS-1$
+		assertEquals("\\u0001\\u00FA\\u0ABC\\u1234", regEx.toString());
 	}
 
 	/**
 	 * <ul>
-	 * <li>See {@link AbstractBuilder#unicode(UnicodeBlock)}</li>
-	 * <li>See {@link AbstractBuilder#unicode(UnicodeCharacterProperty)}</li>
-	 * <li>See {@link AbstractBuilder#notUnicode(UnicodeBlock)}</li>
-	 * <li>See {@link AbstractBuilder#notUnicode(UnicodeCharacterProperty)}</li>
+	 * <li>See {@link BaseCommonBuilder#unicode(UnicodeBlock)}</li>
+	 * <li>See {@link BaseCommonBuilder#unicode(UnicodeCharacterProperty)}</li>
+	 * <li>See {@link BaseCommonBuilder#notUnicode(UnicodeBlock)}</li>
+	 * <li>See {@link BaseCommonBuilder#notUnicode(UnicodeCharacterProperty)}</li>
 	 * </ul>
 	 */
 	@Test
 	public void unicodePropertyOrScriptTest() {
-		AbstractBuilder<?> regEx = createAbstractBuilder();
+		TestBaseCommonBuilder regEx = createAbstractBuilder();
 
 		try {
 			regEx.unicode((UnicodeBlock) null);
@@ -209,51 +208,49 @@ public class AbstractBuilderTest {
 
 		regEx = createAbstractBuilder();
 		regEx.unicode(UnicodeBlock.InArrows);
-		assertEquals("\\p{InArrows}", regEx.toString()); //$NON-NLS-1$
+		assertEquals("\\p{InArrows}", regEx.toString());
 
 		regEx.unicode(UnicodeCharacterProperty.Letter_Number);
-		assertEquals("\\p{InArrows}\\p{Letter_Number}", regEx.toString()); //$NON-NLS-1$
+		assertEquals("\\p{InArrows}\\p{Letter_Number}", regEx.toString());
 
 		regEx.notUnicode(UnicodeBlock.InLatin_Extended_A);
-		assertEquals(
-				"\\p{InArrows}\\p{Letter_Number}\\P{InLatin_Extended-A}", regEx.toString()); //$NON-NLS-1$
+		assertEquals("\\p{InArrows}\\p{Letter_Number}\\P{InLatin_Extended-A}", regEx.toString());
 
 		regEx.notUnicode(UnicodeCharacterProperty.LAmpersand);
-		assertEquals(
-				"\\p{InArrows}\\p{Letter_Number}\\P{InLatin_Extended-A}\\P{L&}", regEx.toString()); //$NON-NLS-1$
+		assertEquals("\\p{InArrows}\\p{Letter_Number}\\P{InLatin_Extended-A}\\P{L&}", regEx.toString());
 	}
 
 	/**
 	 * <ul>
-	 * <li>See {@link AbstractBuilder#whitespace()}</li>
-	 * <li>See {@link AbstractBuilder#digit()}</li>
-	 * <li>See {@link AbstractBuilder#wordCharacter()}</li>
-	 * <li>See {@link AbstractBuilder#notWhitespace()}</li>
-	 * <li>See {@link AbstractBuilder#notDigit()}</li>
-	 * <li>See {@link AbstractBuilder#notWordCharacter()}</li>
+	 * <li>See {@link BaseCommonBuilder#whitespace()}</li>
+	 * <li>See {@link BaseCommonBuilder#digit()}</li>
+	 * <li>See {@link BaseCommonBuilder#wordCharacter()}</li>
+	 * <li>See {@link BaseCommonBuilder#notWhitespace()}</li>
+	 * <li>See {@link BaseCommonBuilder#notDigit()}</li>
+	 * <li>See {@link BaseCommonBuilder#notWordCharacter()}</li>
 	 * </ul>
 	 */
 	@Test
 	public void shorthandCharacterClassTest() {
-		AbstractBuilder<?> regEx = createAbstractBuilder();
+		TestBaseCommonBuilder regEx = createAbstractBuilder();
 
 		regEx.whitespace();
-		assertEquals("\\s", regEx.toString()); //$NON-NLS-1$
+		assertEquals("\\s", regEx.toString());
 
 		regEx.digit();
-		assertEquals("\\s\\d", regEx.toString()); //$NON-NLS-1$
+		assertEquals("\\s\\d", regEx.toString());
 
 		regEx.wordCharacter();
-		assertEquals("\\s\\d\\w", regEx.toString()); //$NON-NLS-1$
+		assertEquals("\\s\\d\\w", regEx.toString());
 
 		regEx.notDigit();
-		assertEquals("\\s\\d\\w\\D", regEx.toString()); //$NON-NLS-1$
+		assertEquals("\\s\\d\\w\\D", regEx.toString());
 
 		regEx.notWordCharacter();
-		assertEquals("\\s\\d\\w\\D\\W", regEx.toString()); //$NON-NLS-1$
+		assertEquals("\\s\\d\\w\\D\\W", regEx.toString());
 
 		regEx.notWhitespace();
-		assertEquals("\\s\\d\\w\\D\\W\\S", regEx.toString()); //$NON-NLS-1$
+		assertEquals("\\s\\d\\w\\D\\W\\S", regEx.toString());
 	}
 
 }

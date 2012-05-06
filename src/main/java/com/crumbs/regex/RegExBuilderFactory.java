@@ -17,8 +17,10 @@ package com.crumbs.regex;
 
 /**
  * @author Chris Topher
- * @version 0.0, 07/20/2009
+ * @version 0.0, May 13, 2012
  */
-public interface RegExBuilderFactory extends RegExCommon {
-	CharClassBuilder charClass();
+public interface RegExBuilderFactory {
+	RegExBuilder createRegExBuilder();
+
+	CharClassBuilder createCharClassBuilder();
 }

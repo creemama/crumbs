@@ -18,56 +18,43 @@ package com.crumbs.regex;
 import static com.crumbs.util.Logging.illegalNullArg;
 import static com.crumbs.util.Logging.illegalOutsideSetArg;
 
-import com.crumbs.util.Logging;
-
 /**
+ * Base class for {@link CharClassBuilder} realizations. This code is common to
+ * many different regular-expression engines.
+ * 
  * @author Chris Topher
  * @version 0.0, Sep 5, 2009
  */
-public class CharClassBuilderImpl extends AbstractBuilder<CharClassBuilderImpl>
-		implements CharClassBuilder {
-
-	/**
-	 * @param builder
-	 */
-	CharClassBuilderImpl(StringBuilder builder) {
-		super(builder);
-	}
-
+abstract class BaseCharClassBuilder extends BaseCommonBuilder<CharClassBuilder> implements CharClassBuilder {
 	@Override
-	protected CharClassBuilderImpl thiz() {
-		return this;
-	}
-
-	// TODO what happens if min or max is a special character
 	public CharClassBuilder range(char min, char max) {
 		if (min > max) {
 			throw illegalOutsideSetArg( //
-					char.class, "min", new Character(min), //$NON-NLS-1$//
-					"[0, max]=[0," + max + "]"); //$NON-NLS-1$//$NON-NLS-2$
+					char.class, "min", new Character(min), "[0, max]=[0," + max + "]");
 		}
-		return t(min).t("-").t(max); //$NON-NLS-1$
+		return u(min).u("-").t(max);
 	}
 
+	@Override
 	public CharClassBuilder c(char c0, char... cN) {
 		if (cN == null) {
-			throw illegalNullArg(char[].class, "cN"); //$NON-NLS-1$
+			throw illegalNullArg(char[].class, "cN");
 		}
 		charClass(c0);
 		for (char c : cN) {
 			charClass(c);
 		}
-		return this;
+		return thiz();
 	}
 
 	@Override
 	public CharClassBuilder str(String str) {
 		if (str == null) {
-			throw Logging.illegalNullArg(String.class, "str"); //$NON-NLS-1$
+			throw illegalNullArg(String.class, "str");
 		}
 		for (char c : str.toCharArray()) {
 			charClass(c);
 		}
-		return this;
+		return thiz();
 	}
 }

@@ -1,1 +1,3 @@
-RegExBuilder is "the" StringBuilder for regular expressions.
+RegExBuilder is a Java regular-expression library that enables you to write regular expressions in plain language.
+
+This library was inspired by StringBuilder.

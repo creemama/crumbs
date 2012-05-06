@@ -16,21 +16,11 @@
 package com.crumbs.regex;
 
 /**
+ * See {@link CommonBuilder#posix(POSIXCharacterClass)}.
+ * 
  * @author Chris Topher
  * @version 0.0, Aug 22, 2009
  */
 public enum POSIXCharacterClass {
-	Lower,
-	Upper,
-	ASCII,
-	Alpha,
-	Digit,
-	Alnum,
-	Punct,
-	Graph,
-	Print,
-	Blank,
-	Cntrl,
-	XDigit,
-	Space
+	Lower, Upper, ASCII, Alpha, Digit, Alnum, Punct, Graph, Print, Blank, Cntrl, XDigit, Space
 }

@@ -16,55 +16,13 @@
 package com.crumbs.regex;
 
 /**
- * See {@link CommonBuilder#unicode(UnicodeScript)}.
- * 
  * @author Chris Topher
- * @version 0.0, Jul 21, 2009
+ * @version 0.0, May 6, 2012
  */
-public enum UnicodeScript {
-	Common,
-	Arabic,
-	Armenian,
-	Bengali,
-	Bopomofo,
-	Braille,
-	Buhid,
-	CanadianAboriginal,
-	Cherokee,
-	Cyrillic,
-	Devanagari,
-	Ethiopic,
-	Georgian,
-	Greek,
-	Gujarati,
-	Gurmukhi,
-	Han,
-	Hangul,
-	Hanunoo,
-	Hebrew,
-	Hiragana,
-	Inherited,
-	Kannada,
-	Katakana,
-	Khmer,
-	Lao,
-	Latin,
-	Limbu,
-	Malayalam,
-	Mongolian,
-	Myanmar,
-	Ogham,
-	Oriya,
-	Runic,
-	Sinhala,
-	Syriac,
-	Tagalog,
-	Tagbanwa,
-	TaiLe,
-	Tamil,
-	Telugu,
-	Thaana,
-	Thai,
-	Tibetan,
-	Yi;
+public class VimCharClassBuilder extends BaseCharClassBuilder {
+
+	@Override
+	protected VimCharClassBuilder thiz() {
+		return this;
+	}
 }

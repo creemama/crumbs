@@ -16,23 +16,30 @@
 package com.crumbs.regex;
 
 /**
+ * See
+ * {@link RegExBuilder#turnOnOffMatchFlags(RegExMatchFlag, RegExMatchFlag...)}.
+ * 
  * @author Chris Topher
  * @version 0.0, Aug 23, 2009
  */
 public enum RegExMatchFlag {
 
-	TURN_ON_UNIX_LINES(true, 'd'),
-	TURN_OFF_UNIX_LINES(false, 'd'),
-	TURN_ON_CASE_INSENSITIVE(true, 'i'),
-	TURN_OFF_CASE_INSENSITIVE(false, 'i'),
-	TURN_ON_COMMENTS(true, 'x'),
-	TURN_OFF_COMMENTS(false, 'x'),
-	TURN_ON_MULTILINE(true, 'm'),
-	TURN_OFF_MULTILINE(false, 'm'),
-	TURN_ON_DOTALL(true, 's'),
-	TURN_OFF_DOTALL(false, 's'),
-	TURN_ON_UNICODE_CASE(true, 'u'),
-	TURN_OFF_UNICODE_CASE(false, 'u');
+	TURN_ON_UNIX_LINES(OnOffState.ON, 'd'),
+	TURN_OFF_UNIX_LINES(OnOffState.OFF, 'd'),
+	TURN_ON_CASE_INSENSITIVE(OnOffState.ON, 'i'),
+	TURN_OFF_CASE_INSENSITIVE(OnOffState.OFF, 'i'),
+	TURN_ON_COMMENTS(OnOffState.ON, 'x'),
+	TURN_OFF_COMMENTS(OnOffState.OFF, 'x'),
+	TURN_ON_MULTILINE(OnOffState.ON, 'm'),
+	TURN_OFF_MULTILINE(OnOffState.OFF, 'm'),
+	TURN_ON_DOTALL(OnOffState.ON, 's'),
+	TURN_OFF_DOTALL(OnOffState.OFF, 's'),
+	TURN_ON_UNICODE_CASE(OnOffState.ON, 'u'),
+	TURN_OFF_UNICODE_CASE(OnOffState.OFF, 'u');
+
+	public enum OnOffState {
+		ON, OFF;
+	}
 
 	static {
 		TURN_ON_UNIX_LINES.opposite = TURN_OFF_UNIX_LINES;
@@ -51,24 +58,24 @@ public enum RegExMatchFlag {
 
 	private RegExMatchFlag opposite;
 
-	private final char character_;
+	private final char character;
 
-	private final boolean isOnFlag_;
+	private final OnOffState onOffState;
 
-	RegExMatchFlag(boolean isOnFlag, char character) {
-		this.isOnFlag_ = isOnFlag;
-		this.character_ = character;
+	RegExMatchFlag(OnOffState onFlag, char character) {
+		this.onOffState = onFlag;
+		this.character = character;
 	}
 
 	public RegExMatchFlag getOppositeFlag() {
 		return this.opposite;
 	}
 
-	public boolean isOnFlag() {
-		return this.isOnFlag_;
+	public boolean isOn() {
+		return OnOffState.ON.equals(this.onOffState);
 	}
 
 	public char toChar() {
-		return this.character_;
+		return this.character;
 	}
 }

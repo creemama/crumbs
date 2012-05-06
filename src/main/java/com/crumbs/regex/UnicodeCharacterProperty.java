@@ -16,6 +16,8 @@
 package com.crumbs.regex;
 
 /**
+ * See {@link CommonBuilder#unicode(UnicodeCharacterProperty)}.
+ * 
  * @author Chris Topher
  * @version 0.0, Jul 21, 2009
  */
@@ -31,8 +33,8 @@ public enum UnicodeCharacterProperty {
 	Uppercase_Letter,
 	Lt,
 	Titlecase_Letter,
-	LAmpersand("L&"), //$NON-NLS-1$
-	LetterAmpersand("Letter&"), //$NON-NLS-1$
+	LAmpersand("L&"),
+	LetterAmpersand("Letter&"),
 	Lm,
 	Modifier_Letter,
 	Lo,
@@ -100,18 +102,18 @@ public enum UnicodeCharacterProperty {
 	Cn,
 	Unassigned;
 
-	private final String mName;
+	private final String name;
 
 	private UnicodeCharacterProperty() {
-		this.mName = null;
+		this(null);
 	}
 
 	private UnicodeCharacterProperty(String name) {
-		this.mName = name;
+		this.name = name;
 	}
 
 	@Override
 	public String toString() {
-		return this.mName == null ? name() : this.mName;
+		return this.name == null ? name() : this.name;
 	}
 }

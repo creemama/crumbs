@@ -16,7 +16,7 @@
 package com.crumbs.regex;
 
 /**
- * Regular expression part that can only exist inside of a character class
+ * Regular-expression part that can only exist inside of a character class
  * 
  * @author Chris Topher
  * @version 0.0, Jul 20, 2009
@@ -32,6 +32,8 @@ public interface CharClassBuilder extends CommonBuilder<CharClassBuilder> {
 	 * @throws IllegalArgumentException
 	 *             if {@code min} is greater than {@code max}
 	 */
+	// TODO what happens if min or max is a special character
+	// TODO Can a char be negative?
 	CharClassBuilder range(char min, char max);
 
 	/**

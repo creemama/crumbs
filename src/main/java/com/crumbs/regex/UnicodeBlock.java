@@ -16,16 +16,21 @@
 package com.crumbs.regex;
 
 /**
+ * See {@link CommonBuilder#unicode(UnicodeBlock)}.
+ * 
  * @author Chris Topher
  * @version 0.0, Jul 21, 2009
  */
-// http://www.unicode.org/Public/3.0-Update/Blocks-3.txt
-// There may need to be some manipulation stuff here
-// http://www.regular-expressions.info/unicode.html#prop
 public enum UnicodeBlock {
-	InBasic_Latin, InLatin_1_Supplement("InLatin-1_Supplement"), //$NON-NLS-1$
-	InLatin_Extended_A("InLatin_Extended-A"), //$NON-NLS-1$
-	InLatin_Extended_B("InLatin_Extended-B"), //$NON-NLS-1$
+
+	// http://www.unicode.org/Public/3.0-Update/Blocks-3.txt
+	// There may need to be some manipulation stuff here
+	// http://www.regular-expressions.info/unicode.html#prop
+
+	InBasic_Latin,
+	InLatin_1_Supplement("InLatin-1_Supplement"),
+	InLatin_Extended_A("InLatin_Extended-A"),
+	InLatin_Extended_B("InLatin_Extended-B"),
 	InIPA_Extensions,
 	InSpacing_Modifier_Letters,
 	InCombining_Diacritical_Marks,
@@ -87,13 +92,11 @@ public enum UnicodeBlock {
 	InGeometric_Shapes,
 	InMiscellaneous_Symbols,
 	InDingbats,
-	InMiscellaneous_Mathematical_Symbols_A(
-			"InMiscellaneous_Mathematical_Symbols-A"), //$NON-NLS-1$
-	InSupplemental_Arrows_A("InSupplemental_Arrows-A"), //$NON-NLS-1$
+	InMiscellaneous_Mathematical_Symbols_A("InMiscellaneous_Mathematical_Symbols-A"),
+	InSupplemental_Arrows_A("InSupplemental_Arrows-A"),
 	InBraille_Patterns,
-	InSupplemental_Arrows_B("InSupplemental_Arrows-B"), //$NON-NLS-1$
-	InMiscellaneous_Mathematical_Symbols_B(
-			"InMiscellaneous_Mathematical_Symbols-"), //$NON-NLS-1$
+	InSupplemental_Arrows_B("InSupplemental_Arrows-B"),
+	InMiscellaneous_Mathematical_Symbols_B("InMiscellaneous_Mathematical_Symbols-"),
 	InSupplemental_Mathematical_Operators,
 	InMiscellaneous_Symbols_and_Arrows,
 	InCJK_Radicals_Supplement,
@@ -121,27 +124,27 @@ public enum UnicodeBlock {
 	InPrivate_Use_Area,
 	InCJK_Compatibility_Ideographs,
 	InAlphabetic_Presentation_Forms,
-	InArabic_Presentation_Forms_A("InArabic_Presentation_Forms-A"), //$NON-NLS-1$
+	InArabic_Presentation_Forms_A("InArabic_Presentation_Forms-A"),
 	InVariation_Selectors,
 	InCombining_Half_Marks,
 	InCJK_Compatibility_Forms,
 	InSmall_Form_Variants,
-	InArabic_Presentation_Forms_B("InArabic_Presentation_Forms-B"), //$NON-NLS-1$
+	InArabic_Presentation_Forms_B("InArabic_Presentation_Forms-B"),
 	InHalfwidth_and_Fullwidth_Forms,
 	InSpecials;
 
-	private final String mName;
+	private final String name;
 
 	private UnicodeBlock() {
-		this.mName = null;
+		this(null);
 	}
 
 	private UnicodeBlock(String name) {
-		this.mName = name;
+		this.name = name;
 	}
 
 	@Override
 	public String toString() {
-		return this.mName == null ? name() : this.mName;
+		return this.name == null ? name() : this.name;
 	}
 }

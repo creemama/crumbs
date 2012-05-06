@@ -16,13 +16,15 @@
 package com.crumbs.regex;
 
 /**
- * Methods that are common between RegExFactory, RegExBuilder, and
- * CharClassBuilder
+ * Methods that are common between {@link RegExBuilder} and
+ * {@link CharClassBuilder}
  * 
  * @author Chris Topher
  * @version 0.0, Sep 5, 2009
+ * @see RegExBuilder
+ * @see CharClassBuilder
  */
-public interface CommonBuilder<T extends CommonBuilder<T>> {
+interface CommonBuilder<B extends CommonBuilder<B>> {
 	// ==========
 	// Characters
 	// ==========
@@ -35,7 +37,7 @@ public interface CommonBuilder<T extends CommonBuilder<T>> {
 	 * 
 	 * @return {@code this} RegExBuilder or a {@code new} one
 	 */
-	T bell();
+	B bell();
 
 	/**
 	 * Appends <tt>\t</tt> to the regular expression.
@@ -45,17 +47,18 @@ public interface CommonBuilder<T extends CommonBuilder<T>> {
 	 * 
 	 * @return {@code this} RegExBuilder or a {@code new} one
 	 */
-	T tab();
+	B tab();
 
 	/**
 	 * Appends <tt>\n</tt> to the regular expression.
 	 * <p>
-	 * <tt>\n</tt> matches the newline (line feed) character (<tt>'\u000A'</tt>).
+	 * <tt>\n</tt> matches the newline (line feed) character (<tt>'\u000A'</tt>
+	 * ).
 	 * </p>
 	 * 
 	 * @return {@code this} RegExBuilder or a {@code new} one
 	 */
-	T lineFeed();
+	B lineFeed();
 
 	/**
 	 * Appends <tt>\v</tt> to the regular expression.
@@ -65,7 +68,7 @@ public interface CommonBuilder<T extends CommonBuilder<T>> {
 	 * 
 	 * @return {@code this} RegExBuilder or a {@code new} one
 	 */
-	T verticalTab();
+	B verticalTab();
 
 	/**
 	 * Appends <tt>\f</tt> to the regular expression.
@@ -75,7 +78,7 @@ public interface CommonBuilder<T extends CommonBuilder<T>> {
 	 * 
 	 * @return {@code this} RegExBuilder or a {@code new} one
 	 */
-	T formFeed();
+	B formFeed();
 
 	/**
 	 * Appends <tt>\r</tt> to the regular expression.
@@ -85,7 +88,7 @@ public interface CommonBuilder<T extends CommonBuilder<T>> {
 	 * 
 	 * @return {@code this} RegExBuilder or a {@code new} one
 	 */
-	T carriageReturn();
+	B carriageReturn();
 
 	/**
 	 * Appends <tt>\e</tt> to the regular expression.
@@ -95,7 +98,7 @@ public interface CommonBuilder<T extends CommonBuilder<T>> {
 	 * 
 	 * @return {@code this} RegExBuilder or a {@code new} one
 	 */
-	T escape();
+	B escape();
 
 	/**
 	 * Appends <tt>\c</tt> followed by the specified character to the regular
@@ -218,37 +221,37 @@ public interface CommonBuilder<T extends CommonBuilder<T>> {
 	 * </tr>
 	 * </table>
 	 * 
-	 * @param x
+	 * @param c
 	 *            character literal between <tt>A</tt> ({@code'\u0041'}) through
 	 *            <tt>Z</tt> ({@code'\u005A'}) inclusive or between <tt>a</tt> (
 	 *            {@code'\u0061'}) through <tt>z</tt> ({@code'\u007A'})
 	 *            inclusive
 	 * @return {@code this} RegExBuilder or a {@code new} one
 	 * @throws IllegalArgumentException
-	 *             if {@code x} is not in the range defined above
+	 *             if {@code c} is not in the range defined above
 	 * @see #octal(int)
 	 * @see #ascii(int)
 	 * @see #unicode(int)
 	 */
-	T control(char x);
+	B control(char c);
 
 	/**
 	 * Appends <tt>\x0</tt><em>n</em> where <em>n</em> is the octal
-	 * representation of the specified argument {@code n}.
+	 * representation of the specified argument {@code octal}.
 	 * <p>
 	 * <tt>\x0</tt><em>n</em> matches the ASCII character with octal value
-	 * {@code n}.
+	 * {@code octal}.
 	 * </p>
 	 * 
-	 * @param n
+	 * @param octal
 	 *            integer between (0)<sub>8</sub> to (377)<sub>8</sub>
 	 *            inclusive; this range is equivalent to (0)<sub>10</sub> to
 	 *            (255)<sub>10</sub> inclusive
 	 * @return {@code this} RegExBuilder or a {@code new} one
 	 * @throws IllegalArgumentException
-	 *             if {@code n} is not in the range defined above
+	 *             if {@code octal} is not in the range defined above
 	 */
-	T octal(int n);
+	B octal(int octal);
 
 	/**
 	 * Appends <tt>\x</tt><em>hh</em> to the regular expression.
@@ -266,7 +269,7 @@ public interface CommonBuilder<T extends CommonBuilder<T>> {
 	 * @throws IllegalArgumentException
 	 *             if {@code hex} is not in the range defined above
 	 */
-	T ascii(int hex);
+	B ascii(int hex);
 
 	// ===============
 	// Unicode Support
@@ -288,7 +291,7 @@ public interface CommonBuilder<T extends CommonBuilder<T>> {
 	 * @throws IllegalArgumentException
 	 *             if {@code hex} is not in the range defined above
 	 */
-	T unicode(int hex);
+	B unicode(int hex);
 
 	/**
 	 * Appends <tt>\p{</tt><em>block</em><tt>}</tt> to the regular expression.
@@ -403,7 +406,7 @@ public interface CommonBuilder<T extends CommonBuilder<T>> {
 	 *             if {@code block} is {@code null}
 	 * @see #notUnicode(UnicodeBlock)
 	 */
-	T unicode(UnicodeBlock block);
+	B unicode(UnicodeBlock block);
 
 	/**
 	 * Appends <tt>\P{</tt><em>block</em><tt>}</tt> to the regular expression.
@@ -518,7 +521,7 @@ public interface CommonBuilder<T extends CommonBuilder<T>> {
 	 *             if {@code block} is {@code null}
 	 * @see #unicode(UnicodeBlock)
 	 */
-	T notUnicode(UnicodeBlock block);
+	B notUnicode(UnicodeBlock block);
 
 	/**
 	 * Appends <tt>\p{</tt><em>category</em><tt>}</tt> to the regular
@@ -583,7 +586,7 @@ public interface CommonBuilder<T extends CommonBuilder<T>> {
 	 *             if {@code category} is {@code null}
 	 * @see #notUnicode(UnicodeCharacterProperty)
 	 */
-	T unicode(UnicodeCharacterProperty category);
+	B unicode(UnicodeCharacterProperty category);
 
 	/**
 	 * Appends <tt>\P{</tt><em>category</em><tt>}</tt> to the regular
@@ -650,7 +653,13 @@ public interface CommonBuilder<T extends CommonBuilder<T>> {
 	 *             if {@code property} is {@code null}
 	 * @see #unicode(UnicodeCharacterProperty)
 	 */
-	T notUnicode(UnicodeCharacterProperty category);
+	B notUnicode(UnicodeCharacterProperty category);
+
+	// TODO documentation
+	B unicode(UnicodeScript category);
+
+	// TODO documentation
+	B notUnicode(UnicodeScript category);
 
 	// ===========================
 	// Shorthand Character Classes
@@ -696,7 +705,8 @@ public interface CommonBuilder<T extends CommonBuilder<T>> {
 	 * <td><tt>\p{Punct}</tt></td>
 	 * <td>Punctuation: One of <tt>!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~</tt></td>
 	 * </tr>
-	 * <!-- <tt>[\!"#\$%&'\(\)\*\+,\-\./:;\<=\>\?@\[\\\]\^_`\{\|\}~]</tt> <tt>[\X21-\X2F\X31-\X40\X5B-\X60\X7B-\X7E]</tt> -->
+	 * <!-- <tt>[\!"#\$%&'\(\)\*\+,\-\./:;\<=\>\?@\[\\\]\^_`\{\|\}~]</tt>
+	 * <tt>[\X21-\X2F\X31-\X40\X5B-\X60\X7B-\X7E]</tt> -->
 	 * <tr>
 	 * <td><tt>\p{Graph}</tt></td>
 	 * <td>A visible character: <tt>[\p{Alnum}\p{Punct}]</tt></td>
@@ -727,9 +737,9 @@ public interface CommonBuilder<T extends CommonBuilder<T>> {
 	 *            a POSIX character class
 	 * @return {@code this} RegExBuilder or a {@code new} one
 	 * @throws IllegalArgumentException
-	 *             if {@code propertyOrBlock} is {@code null}
+	 *             if {@code posixCharClass} is {@code null}
 	 */
-	T posix(POSIXCharacterClass posixCharClass);
+	B posix(POSIXCharacterClass posixCharClass);
 
 	/**
 	 * Appends <tt>\P{</tt><em>posixCharClass</em><tt>}</tt> to the regular
@@ -771,7 +781,8 @@ public interface CommonBuilder<T extends CommonBuilder<T>> {
 	 * <td><tt>Punct</tt></td>
 	 * <td>Punctuation: One of <tt>!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~</tt></td>
 	 * </tr>
-	 * <!-- <tt>[\!"#\$%&'\(\)\*\+,\-\./:;\<=\>\?@\[\\\]\^_`\{\|\}~]</tt> <tt>[\X21-\X2F\X31-\X40\X5B-\X60\X7B-\X7E]</tt> -->
+	 * <!-- <tt>[\!"#\$%&'\(\)\*\+,\-\./:;\<=\>\?@\[\\\]\^_`\{\|\}~]</tt>
+	 * <tt>[\X21-\X2F\X31-\X40\X5B-\X60\X7B-\X7E]</tt> -->
 	 * <tr>
 	 * <td><tt>Graph</tt></td>
 	 * <td>A visible character: <tt>[\p{Alnum}\p{Punct}]</tt></td>
@@ -804,7 +815,7 @@ public interface CommonBuilder<T extends CommonBuilder<T>> {
 	 * @throws IllegalArgumentException
 	 *             if {@code propertyOrBlock} is {@code null}
 	 */
-	T notPOSIX(POSIXCharacterClass posixCharClass);
+	B notPOSIX(POSIXCharacterClass posixCharClass);
 
 	/**
 	 * Appends <tt>\d</tt> to the regular expression.
@@ -815,7 +826,7 @@ public interface CommonBuilder<T extends CommonBuilder<T>> {
 	 * @return {@code this} RegExBuilder or a {@code new} one
 	 * @see #notDigit()
 	 */
-	T digit();
+	B digit();
 
 	/**
 	 * Appends <tt>\D</tt> to the regular expression.
@@ -826,7 +837,7 @@ public interface CommonBuilder<T extends CommonBuilder<T>> {
 	 * @return {@code this} RegExBuilder or a {@code new} one
 	 * @see #digit()
 	 */
-	T notDigit();
+	B notDigit();
 
 	/**
 	 * Appends <tt>\s</tt> to the regular expression.
@@ -837,7 +848,7 @@ public interface CommonBuilder<T extends CommonBuilder<T>> {
 	 * @return {@code this} RegExBuilder or a {@code new} one
 	 * @see #notWhitespace()
 	 */
-	T whitespace();
+	B whitespace();
 
 	/**
 	 * Appends <tt>\S</tt> to the regular expression.
@@ -848,7 +859,7 @@ public interface CommonBuilder<T extends CommonBuilder<T>> {
 	 * @return {@code this} RegExBuilder or a {@code new} one
 	 * @see #whitespace()
 	 */
-	T notWhitespace();
+	B notWhitespace();
 
 	/**
 	 * Appends <tt>\w</tt> to the regular expression.
@@ -859,7 +870,7 @@ public interface CommonBuilder<T extends CommonBuilder<T>> {
 	 * @return {@code this} RegExBuilder or a {@code new} one
 	 * @see #notWordCharacter()
 	 */
-	T wordCharacter();
+	B wordCharacter();
 
 	/**
 	 * Appends <tt>\W</tt> to the regular expression.
@@ -870,5 +881,5 @@ public interface CommonBuilder<T extends CommonBuilder<T>> {
 	 * @return {@code this} RegExBuilder or a {@code new} one
 	 * @see #wordCharacter()
 	 */
-	T notWordCharacter();
+	B notWordCharacter();
 }
